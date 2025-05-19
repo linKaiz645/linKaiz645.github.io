@@ -1,1 +1,148 @@
-<p>Hello</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy 4th Anniversary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .envelope {
+      perspective: 1000px;
+      transition: transform 0.5s ease;
+    }
+
+    .envelope-front {
+      background: linear-gradient(145deg, #e94e77 0%, #d73964 100%);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .envelope-flap {
+      background: linear-gradient(145deg, #e94e77 0%, #c62e58 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+      transform-origin: top;
+      transition: transform 1s ease;
+      box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .envelope-flap.open {
+      transform: rotateX(180deg);
+    }
+
+    .card {
+      background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+      transform-origin: center bottom;
+      transition: transform 1s ease 0.5s;
+      transform: translateY(0);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card.hidden {
+      transform: translateY(100%);
+    }
+
+    .heart {
+      color: #e94e77;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .seal {
+      background: linear-gradient(145deg, #f8d568 0%, #f0b429 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .seal:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .seal.hidden {
+      display: none;
+    }
+
+    .anniversary-text {
+      background: linear-gradient(90deg, #e94e77, #f27121);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center p-4">
+  <div class="envelope w-full max-w-md mx-auto">
+    <div class="relative">
+      <!-- Flap -->
+      <div class="envelope-flap h-24 w-full absolute top-0 z-30"></div>
+
+      <!-- Front Rectangle -->
+      <div class="envelope-front h-64 w-full rounded-b-lg relative z-10 mt-24"></div>
+
+      <!-- Seal -->
+      <div class="seal w-16 h-16 absolute top-14 left-1/2 transform -translate-x-1/2 z-40 flex items-center justify-center cursor-pointer" id="seal">
+        <div class="text-center text-white text-sm font-bold leading-tight">
+          OPEN
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="card hidden h-72 w-[90%] mx-auto absolute top-5 left-1/2 transform -translate-x-1/2 rounded-lg z-20 p-6 overflow-hidden">
+        <div class="h-full w-full flex flex-col items-center justify-center text-center">
+          <h1 class="text-3xl font-bold anniversary-text mb-4">Happy 4th Anniversary!</h1>
+          <p class="text-gray-700 mb-6">Four wonderful years of love and joy. Here's to many more beautiful moments together!</p>
+          <div class="flex space-x-2 mb-6">
+            <span class="heart text-4xl">❤️</span>
+            <span class="heart text-4xl" style="animation-delay: 0.5s">❤️</span>
+            <span class="heart text-4xl" style="animation-delay: 1s">❤️</span>
+          </div>
+          <p class="text-gray-600 italic">"The best thing to hold onto in life is each other."</p>
+          <div class="absolute bottom-4 right-4 text-sm text-gray-500">With all my love</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const seal = document.getElementById('seal');
+      const envelopeFlap = document.querySelector('.envelope-flap');
+      const card = document.querySelector('.card');
+      let isOpen = false;
+
+      seal.addEventListener('click', function () {
+        if (!isOpen) {
+          seal.classList.add('hidden');
+          envelopeFlap.classList.add('open');
+
+          setTimeout(() => {
+            card.classList.remove('hidden');
+
+            setTimeout(() => {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            }, 500);
+          }, 800);
+
+          isOpen = true;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
